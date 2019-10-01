@@ -4,6 +4,8 @@ import errors.SyntaxError;
 import scanner.Token;
 import scanner.TokenStream;
 
+import static parsetree.Constants.*;
+
 /**
  * Statement Class
  * Extends {@link GrammarObject}
@@ -15,7 +17,6 @@ class Statement extends GrammarObject {
 
     // Key Words or Reserved Words
     private static final String PRINT = "print";
-    private static final String INTEGER = "Integer";
 
 
     /**
@@ -23,16 +24,23 @@ class Statement extends GrammarObject {
      *
      * @param parent - Parent object, should be a Program.
      * @param tokenStream - Stream of tokens with current index.
-     * @throws Exception - Any errors that my have occurred in parsing.
+     * @throws SyntaxError - Any errors that my have occurred in parsing.
      */
-    Statement(GrammarObject parent, TokenStream tokenStream) throws Exception {
+    Statement(GrammarObject parent, TokenStream tokenStream) throws SyntaxError {
         super(parent);
 
         Token nextToken = tokenStream.getNextToken();
+        String token = nextToken.toString();
 
         // Print Option
-        if(nextToken.equals(PRINT)){
+        if( token.equals(PRINT)){
             new Print(this, tokenStream);
+        }
+
+        if( token.equals(INTEGER) || token.equals(DOUBLE) ||
+            token.equals(STRING))
+        {
+            new Assignment(this, tokenStream);
         }
 
 

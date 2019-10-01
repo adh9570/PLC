@@ -87,8 +87,9 @@ public abstract class GrammarObject {
         for( GrammarObject child : children ){
             GrammarObject temp = null;
 
-            if(!visited.contains(child))
-                temp = (GrammarObject) child.getScope(identifier);
+            if(!visited.contains(child)) {
+                temp = (GrammarObject) child.getScope(identifier, visited);
+            }
 
             if(temp != null)
                 return (GrammarValue)temp;

@@ -60,7 +60,7 @@ public class Expression extends GrammarObject implements GrammarValue {
             }
         }
         else{
-            firstPar = getScope(tokenStream.peekNextToken().getValue());
+            firstPar = getScope(firstToken.getValue());
             type = ((GrammarValue) firstPar).getType();
         }
     }

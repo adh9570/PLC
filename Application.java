@@ -11,7 +11,8 @@ public class Application{
         // Get Input
         String input = "";
         if(args[0].equals("TEST1")){
-            input = "print( 10.5 + 3.5 );";
+            input = "Integer x = 10;\n" +
+                "print( x + 5 );";
         }
         else{
             try {
