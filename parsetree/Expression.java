@@ -59,6 +59,10 @@ public class Expression extends GrammarObject implements GrammarValue {
                 firstPar = Integer.parseInt(firstToken.getValue());
             }
         }
+        if( firstToken.getType() == Token.Type.STRING ){
+            firstPar = firstToken.toString();
+            type = STRING;
+        }
         else{
             firstPar = getScope(firstToken.getValue());
             type = ((GrammarValue) firstPar).getType();
@@ -121,7 +125,9 @@ public class Expression extends GrammarObject implements GrammarValue {
     @Override
     public Object getValue() {
         if(type.equals(STRING)){
-            return null;
+            if( firstPar instanceof GrammarValue)
+                return ((GrammarValue) firstPar).getValue();
+            return firstPar.toString();
         }
 
         double value = getDoubleValue();

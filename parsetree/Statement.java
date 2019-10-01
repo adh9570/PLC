@@ -37,7 +37,7 @@ class Statement extends GrammarObject {
             new Print(this, tokenStream);
         }
 
-        if( token.equals(INTEGER) || token.equals(DOUBLE) ||
+        else if( token.equals(INTEGER) || token.equals(DOUBLE) ||
             token.equals(STRING))
         {
             new Assignment(this, tokenStream);

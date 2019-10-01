@@ -52,6 +52,9 @@ public class TokenStream {
      * @return token {@link Token}
      */
     public Token getNextToken(){
+        if(index >= tokens.size()){
+            return null;
+        }
         Token t = tokens.get(index);
         index++;
         return t;

@@ -10,16 +10,23 @@ public class Application{
 
         // Get Input
         String input = "";
-        if(args[0].equals("TEST1")){
-            input = "Integer x = 10;\n" +
-                "print( x + 5 );";
-        }
-        else{
-            try {
-                input = new FileIn(args[0]).read();
-            } catch (NoFileFoundError e) {
-                err.println(e.getMessage());
-            }
+        switch (args[0]) {
+            case "TEST1":
+                input = "Integer x = 10;\n" +
+                        "print( x + 5 );";
+                break;
+            case "TEST2":
+                input = "String x = \"Test\";\n" +
+                        "print( x );\n" +
+                        "print ( \"The Test is a success\" );";
+                break;
+            default:
+                try {
+                    input = new FileIn(args[0]).read();
+                } catch (NoFileFoundError e) {
+                    err.println(e.getMessage());
+                }
+                break;
         }
 
         // Scan Code

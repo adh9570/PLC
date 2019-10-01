@@ -4,7 +4,6 @@ import errors.SyntaxError;
 import scanner.Token.Type;
 
 import static java.lang.System.*;
-import static javax.xml.stream.XMLStreamConstants.SPACE;
 
 /**
  * Scanner Class
@@ -76,17 +75,22 @@ public class Scanner {
                 i++;
                 c = characters[i];
 
-                while( Is.characterOrDigit(c) || c == SPACE){
-                    if( Is.quote(c) ){
-                        tokenStream.addToken(new Token(token.toString(), Type.STRING));
-                    }
+                while( Is.characterOrDigit(c) || Is.space(c) ){
                     token.append(c);
                     i++;
                     if( i >= characters.length ){
-                        throw new SyntaxError(new Token("", Type.STRING),
-                            "missing/ unintentional quotation mark");
+                        break;
                     }
                     c = characters[i];
+                }
+
+                if( Is.quote(c) ){
+                    tokenStream.addToken(new Token(token.toString(), Type.STRING));
+                    i++;
+                }
+                else{
+                    throw new SyntaxError(new Token(token.toString(), Type.STRING),
+                        "Missing Ending quotes");
                 }
             }
 

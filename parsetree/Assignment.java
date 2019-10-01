@@ -19,6 +19,7 @@ class Assignment extends GrammarObject implements GrammarValue{
 
 		type = tokenStream.getNextToken();
 		id = tokenStream.getNextToken();
+
 		if( id.getType() != Token.Type.ID_OR_KEYWORD){
 			throw new SyntaxError(id, "Improper variable assignment");
 		}
