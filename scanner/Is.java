@@ -1,6 +1,14 @@
-package Scanner;
+package scanner;
 
+/**
+ * Is Class
+ *
+ * Static class used to make code more legible
+ *  to read. Holds all comparisons for Scanner.
+ */
 class Is {
+
+    private Is(){}
 
     private static final char NEWLINE = '\n';
     private static final char SPACE = ' ';

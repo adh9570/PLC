@@ -1,13 +1,40 @@
-import Scanner.*;
+import errors.NoFileFoundError;
+import io.FileIn;
+import parsetree.Program;
+import scanner.*;
+
+import static java.lang.System.*;
 
 public class Application{
     public static void main(String[]args){
-        String str = "Integer x = 5;\nprint( x + 3.2 );";
-        Scanner scanner = new Scanner(str);
+
+        // Get Input
+        String input = "";
+        if(args[0].equals("TEST1")){
+            input = "print( 10.5 + 3.5 );";
+        }
+        else{
+            try {
+                input = new FileIn(args[0]).read();
+            } catch (NoFileFoundError e) {
+                err.println(e.getMessage());
+            }
+        }
+
+        // Scan Code
+        Scanner scanner = new Scanner(input);
+
+        // Parse Code
         TokenStream tokenStream = scanner.scan();
 
-        for( Token token : tokenStream.getTokens() ){
-            System.out.println(token);
+        // Run Code
+        try {
+            Program program = new Program(tokenStream);
+            program.run();
         }
+        catch (Exception e){
+            err.println(e.getMessage());
+        }
+
     }
 }

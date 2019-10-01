@@ -1,27 +1,62 @@
-package Scanner;
+package scanner;
 
+import errors.SyntaxError;
+import scanner.Token.Type;
+
+import static java.lang.System.*;
 import static javax.xml.stream.XMLStreamConstants.SPACE;
 
+/**
+ * Scanner Class
+ *
+ *  The scanning class is used to parse the code into
+ *      a token stream. See {@link TokenStream}
+ */
 public class Scanner {
 
-    private String preScanned;
+    /**
+     * preScanned
+     *
+     * Pre-scanned string
+     */
+    private final String preScanned;
 
+    /**
+     * Constructor(String)
+     *
+     * @param str - String to be scanned
+     */
     public Scanner(String str) {
         preScanned = str;
     }
 
 
+    /**
+     * scan()
+     *
+     * Scan is used to print the errors that happen
+     *  durring the scanning phase
+     *
+     * @return TokenStream - tokenStream derived from preScanned
+     */
     public TokenStream scan(){
         try {
-            return scan_throws_error();
+            return scanThrowsError();
         }
         catch(Exception e){
-            e.printStackTrace();
+            err.println(e.getMessage());
         }
         return null;
     }
 
-    private TokenStream scan_throws_error() throws Exception{
+    /**
+     * scan_throws_error
+     *
+     * @return TokenStream - tokenStream derived from preScanned
+     * @throws SyntaxError - Any error that may have occured
+     *  durring the scanning phase
+     */
+    private TokenStream scanThrowsError() throws SyntaxError{
 
         TokenStream tokenStream = new TokenStream();
         char[] characters = preScanned.toCharArray();
@@ -43,12 +78,13 @@ public class Scanner {
 
                 while( Is.characterOrDigit(c) || c == SPACE){
                     if( Is.quote(c) ){
-                        tokenStream.addToken(new Token(token.toString(), Token.Type.STRING));
+                        tokenStream.addToken(new Token(token.toString(), Type.STRING));
                     }
                     token.append(c);
                     i++;
                     if( i >= characters.length ){
-                        throw new Exception("Syntax Error, missing/ unintentional quotation mark");
+                        throw new SyntaxError(new Token("", Type.STRING),
+                            "missing/ unintentional quotation mark");
                     }
                     c = characters[i];
                 }
@@ -60,11 +96,11 @@ public class Scanner {
                     token.append(c);
                     i++;
                     if( i >= characters.length ){
-                        throw new Exception("Syntax Error, missing semi-colon");
+                        throw new SyntaxError(new Token("", Type.END_STMT), "missing semi-colon");
                     }
                     c = characters[i];
                 }
-                tokenStream.addToken(new Token(token.toString(), Token.Type.ID_OR_KEYWORD));
+                tokenStream.addToken(new Token(token.toString(), Type.ID_OR_KEYWORD));
             }
 
             // Number
@@ -74,7 +110,7 @@ public class Scanner {
                 while( Is.period(c) || Is.digit(c) ){
                     if( Is.period(c) ){
                         if( hasPeriod ){
-                            throw new Exception("Syntax Error, To many decimal places");
+                            throw new SyntaxError(new Token("", Type.NUMBER), "To many decimal places");
                         }
                         hasPeriod = true;
                     }
@@ -82,74 +118,53 @@ public class Scanner {
                     token.append(c);
                     i++;
                     if( i >= characters.length ){
-                        throw new Exception("Syntax Error, missing semi-colon");
+                        throw new SyntaxError(new Token("", Type.END_STMT), "missing semi-colon");
                     }
                     c = characters[i];
                 }
 
-                tokenStream.addToken(new Token(token.toString(), Token.Type.ID_OR_KEYWORD));
+                tokenStream.addToken(new Token(token.toString(), Type.NUMBER));
             }
 
             // Assign
             else if( Is.equal(c) ){
                 token.append(c);
-                tokenStream.addToken(new Token(token.toString(), Token.Type.ASSIGN));
+                tokenStream.addToken(new Token(token.toString(), Type.ASSIGN));
                 i++;
             }
 
             // End Stmt
             else if( Is.semicolon(c) ){
                 token.append(c);
-                tokenStream.addToken(new Token(token.toString(), Token.Type.END_STMT));
+                tokenStream.addToken(new Token(token.toString(), Type.END_STMT));
                 i++;
             }
 
             // Start Paren
             else if( Is.startParen(c) ){
                 token.append(c);
-                tokenStream.addToken(new Token(token.toString(), Token.Type.START_PAREN));
+                tokenStream.addToken(new Token(token.toString(), Type.START_PAREN));
                 i++;
             }
 
             // End Paren
             else if( Is.endParen(c) ){
                 token.append(c);
-                tokenStream.addToken(new Token(token.toString(), Token.Type.END_PAREN));
+                tokenStream.addToken(new Token(token.toString(), Type.END_PAREN));
                 i++;
             }
 
             // Power
             else if( Is.carrot(c) ){
                 token.append(c);
-                tokenStream.addToken(new Token(token.toString(), Token.Type.POWER));
+                tokenStream.addToken(new Token(token.toString(), Type.POWER));
                 i++;
             }
 
             // Division
-            else if( Is.div(c) ){
+            else if( Is.div(c) || Is.mult(c) || Is.plus(c) || Is.minus(c) ) {
                 token.append(c);
-                tokenStream.addToken(new Token(token.toString(), Token.Type.DIVIDE));
-                i++;
-            }
-
-            // Multiplication
-            else if( Is.mult(c) ){
-                token.append(c);
-                tokenStream.addToken(new Token(token.toString(), Token.Type.MULT));
-                i++;
-            }
-
-            // Addition
-            else if( Is.plus(c) ){
-                token.append(c);
-                tokenStream.addToken(new Token(token.toString(), Token.Type.PLUS));
-                i++;
-            }
-
-            // Subtraction
-            else if( Is.minus(c) ){
-                token.append(c);
-                tokenStream.addToken(new Token(token.toString(), Token.Type.MINUS));
+                tokenStream.addToken(new Token(token.toString(), Type.MATH_OP));
                 i++;
             }
 
