@@ -8,6 +8,7 @@ package scanner;
  */
 class Is {
 
+
     private Is(){}
 
     private static final char NEWLINE = '\n';
@@ -24,6 +25,7 @@ class Is {
     private static final char MULT = '*';
     private static final char DIVIDE = '/';
     private static final char CARROT = '^';
+    private static final char COMMA = ',';
 
 
     static boolean character(char c){
@@ -58,7 +60,7 @@ class Is {
         return c == PERIOD;
     }
 
-    static boolean equal(char c){
+    static boolean equalSign(char c){
         return c == EQUAL;
     }
 
@@ -92,5 +94,9 @@ class Is {
 
     static boolean minus(char c) {
         return c == MINUS;
+    }
+
+    public static boolean comma(char c) {
+        return c == COMMA;
     }
 }

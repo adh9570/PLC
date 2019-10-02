@@ -23,15 +23,31 @@ public class Token {
      *  tree with ease.
      */
     public enum Type {
-        STRING,
-        ID_OR_KEYWORD,
-        NUMBER,
-        ASSIGN,
-        END_STMT,
-        START_PAREN,
-        END_PAREN,
-        POWER,
-        MATH_OP
+        STRING("String"),
+        ID_OR_KEYWORD(),
+        NUMBER("Double"),
+        ASSIGN(),
+        END_STMT(),
+        START_PAREN(),
+        END_PAREN(),
+        POWER(),
+        COMMA(),
+        MATH_OP();
+
+        String value;
+
+        Type(){
+            this.value = "";
+        }
+
+        Type(String value){
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return this.value;
+        }
     }
 
 

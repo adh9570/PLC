@@ -1,10 +1,11 @@
 package parsetree;
 
 import errors.SyntaxError;
+import parsetree.expressions.Expression;
 import scanner.Token;
 import scanner.TokenStream;
 
-import static java.lang.System.out;
+import static java.lang.System.*;
 
 /**
  * Print ( Class )

@@ -99,9 +99,6 @@ public class Scanner {
                 while( Is.characterOrDigit(c) ){
                     token.append(c);
                     i++;
-                    if( i >= characters.length ){
-                        throw new SyntaxError(new Token("", Type.END_STMT), "missing semi-colon");
-                    }
                     c = characters[i];
                 }
                 tokenStream.addToken(new Token(token.toString(), Type.ID_OR_KEYWORD));
@@ -131,7 +128,7 @@ public class Scanner {
             }
 
             // Assign
-            else if( Is.equal(c) ){
+            else if( Is.equalSign(c) ){
                 token.append(c);
                 tokenStream.addToken(new Token(token.toString(), Type.ASSIGN));
                 i++;
@@ -162,6 +159,13 @@ public class Scanner {
             else if( Is.carrot(c) ){
                 token.append(c);
                 tokenStream.addToken(new Token(token.toString(), Type.POWER));
+                i++;
+            }
+
+            // Comma
+            else if( Is.comma(c) ) {
+                token.append(c);
+                tokenStream.addToken(new Token(token.toString(), Type.COMMA));
                 i++;
             }
 

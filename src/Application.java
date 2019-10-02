@@ -17,8 +17,9 @@ public class Application{
                 break;
             case "TEST2":
                 input = "String x = \"Test\";\n" +
-                        "print( x );\n" +
-                        "print ( \"The Test is a success\" );";
+                        "print( x );" +
+                        "print ( \"The Test is a success\" );\n" +
+                        "print ( concat(\"The Concat \", \"Test is a success\" ) );";
                 break;
             default:
                 try {
@@ -34,6 +35,9 @@ public class Application{
 
         // Parse Code
         TokenStream tokenStream = scanner.scan();
+
+//        while( !tokenStream.isEmpty())
+//            out.println(tokenStream.getNextToken());
 
         // Run Code
         try {

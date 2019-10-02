@@ -31,7 +31,7 @@ public abstract class GrammarObject {
      * @param parent - {@link GrammarObject} that is its parent or null
      *               if root of tree
      */
-    GrammarObject(GrammarObject parent){
+    protected GrammarObject(GrammarObject parent){
         this.parent = parent;
         children = new ArrayList<>();
         if(parent != null)
@@ -64,7 +64,7 @@ public abstract class GrammarObject {
      * @param identifier - ID that we are looking for
      * @return GrammarValue that matches the keyword
      */
-    GrammarValue getScope(String identifier) {
+    protected GrammarValue getScope(String identifier) {
         return getScope(identifier, new ArrayList<>());
     }
 
