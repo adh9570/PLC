@@ -1,5 +1,6 @@
 package parsetree;
 
+import errors.RuntimeError;
 import errors.SyntaxError;
 import parsetree.expressions.Expression;
 import scanner.Token;
@@ -28,6 +29,7 @@ class Print extends GrammarObject {
         super(parent);
 
         Token openParen = tokenStream.getNextToken();
+        //noinspection EqualsBetweenInconvertibleTypes
         if( !openParen.equals("(") ){
             throw new SyntaxError(openParen, "Print statement missing opening parenthesis");
         }
@@ -35,6 +37,7 @@ class Print extends GrammarObject {
         new Expression(this, tokenStream);
 
         Token closedParen = tokenStream.getNextToken();
+        //noinspection EqualsBetweenInconvertibleTypes
         if( !closedParen.equals(")") ){
             throw new SyntaxError(closedParen, "Print statement missing closing parenthesis");
         }
@@ -47,8 +50,8 @@ class Print extends GrammarObject {
      * Prints the value of the child.
      */
     @Override
-    public void run() {
+    public void run() throws RuntimeError {
         GrammarObject child = getChildren().get(0);
-        out.println( ((Expression)child).getValue() );
+        out.println(((Expression) child).getValue());
     }
 }

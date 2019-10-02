@@ -27,6 +27,9 @@ class Is {
     private static final char DIVIDE = '/';
     private static final char CARROT = '^';
     private static final char COMMA = ',';
+    private static final char LESS_THAN = '<';
+    private static final char GREATER_THAN = '>';
+    private static final char EXCLAMATION = '!';
 
 
     static boolean character(char c){
@@ -97,7 +100,19 @@ class Is {
         return c == MINUS;
     }
 
-    public static boolean comma(char c) {
+    static boolean comma(char c) {
         return c == COMMA;
+    }
+
+    static boolean lessThan(char c) {
+        return c == LESS_THAN;
+    }
+
+    static boolean greaterThan(char c) {
+        return c == GREATER_THAN;
+    }
+
+    static boolean exclamation(char c) {
+        return c == EXCLAMATION;
     }
 }

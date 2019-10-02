@@ -71,6 +71,16 @@ public class TokenStream {
     }
 
     /**
+     * peekNextToken()
+     *
+     * @return token {@link Token}
+     */
+    public Token peekNextToken(int i){
+        return tokens.get(index + (i- 1));
+    }
+
+
+    /**
      * isEmpty()
      *
      * @return boolean state of where the stream

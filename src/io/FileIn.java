@@ -36,14 +36,10 @@ public class FileIn {
 		if( filename == null )
 			throw new NoFileFoundError("");
 
-		String input = "";
 		try{
-			input = new String(Files.readAllBytes(Paths.get(filename)));
+			return new String(Files.readAllBytes(Paths.get(filename)));
 		} catch (IOException e) {
 			throw new NoFileFoundError(filename);
 		}
-
-		System.out.println(input);
-		return input;
 	}
 }

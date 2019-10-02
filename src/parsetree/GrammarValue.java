@@ -1,5 +1,7 @@
 package parsetree;
 
+import errors.RuntimeError;
+
 /**
  * GrammarValue (Interface)
  *
@@ -14,19 +16,19 @@ public interface GrammarValue {
      * @return A string that is unique to the program
      *  if not unique than is matched to scope.
      */
-    public String getIdentifier();
+    String getIdentifier();
 
     /**
      * getType
      *
      * @return Type of the Value
      */
-    public String getType();
+    String getType();
 
     /**
      * getValue
      *
      * @return Value in corresponding type
      */
-    public Object getValue();
+    Object getValue() throws RuntimeError;
 }

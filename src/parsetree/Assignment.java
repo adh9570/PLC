@@ -1,5 +1,6 @@
 package parsetree;
 
+import errors.RuntimeError;
 import errors.SyntaxError;
 import parsetree.expressions.Expression;
 import scanner.Token;
@@ -44,7 +45,7 @@ class Assignment extends GrammarObject implements GrammarValue{
 	}
 
 	@Override
-	public Object getValue() {
+	public Object getValue() throws RuntimeError {
 		return value.getValue();
 	}
 }

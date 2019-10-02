@@ -32,7 +32,13 @@ public class Token {
         END_PAREN(),
         POWER(),
         COMMA(),
-        MATH_OP();
+        EQ(),
+        ADD_OP(),
+        MULT_OP(),
+        LESS(),
+        GREATER(),
+        LESS_EQ(),
+        GREATER_EQUAL();
 
         String value;
 

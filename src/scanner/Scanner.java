@@ -65,6 +65,8 @@ public class Scanner {
             StringBuilder token = new StringBuilder();
             char c = characters[i];
 
+            // TODO Replace With Switch
+
             // Nothing
             if(Is.newLine(c) || Is.space(c) || Is.tab(c) ){
                 i++;
@@ -130,8 +132,15 @@ public class Scanner {
             // Assign
             else if( Is.equalSign(c) ){
                 token.append(c);
-                tokenStream.addToken(new Token(token.toString(), Type.ASSIGN));
                 i++;
+                c = characters[i];
+                if( Is.equalSign(c) ){
+                    token.append(c);
+                    i++;
+                    tokenStream.addToken(new Token(token.toString(), Type.EQ));
+                }
+                else
+                    tokenStream.addToken(new Token(token.toString(), Type.ASSIGN));
             }
 
             // End Stmt
@@ -169,13 +178,60 @@ public class Scanner {
                 i++;
             }
 
-            // Division
-            else if( Is.div(c) || Is.mult(c) || Is.plus(c) || Is.minus(c) ) {
+            // Add and subtract
+            else if( Is.plus(c) || Is.minus(c) ) {
                 token.append(c);
-                tokenStream.addToken(new Token(token.toString(), Type.MATH_OP));
+                tokenStream.addToken(new Token(token.toString(), Type.ADD_OP));
                 i++;
             }
 
+            // Mult and Division
+            else if( Is.div(c) || Is.mult(c) ) {
+                token.append(c);
+                tokenStream.addToken(new Token(token.toString(), Type.MULT_OP));
+                i++;
+            }
+
+            // Less Than / Less than or equal
+            else if( Is.lessThan(c) ){
+                token.append(c);
+                i++;
+                c = characters[i];
+                if( Is.equalSign(c) ){
+                    token.append(c);
+                    tokenStream.addToken(new Token(token.toString(), Type.LESS_EQ));
+                }
+                else {
+                    tokenStream.addToken(new Token(token.toString(), Type.LESS));
+                }
+            }
+
+            // Greater Than / Greater than or equal
+            else if( Is.greaterThan(c) ){
+                token.append(c);
+                i++;
+                c = characters[i];
+                if( Is.equalSign(c) ){
+                    token.append(c);
+                    tokenStream.addToken(new Token(token.toString(), Type.GREATER_EQUAL));
+                }
+                else {
+                    tokenStream.addToken(new Token(token.toString(), Type.GREATER));
+                }
+            }
+
+            else if( Is.exclamation(c) ){
+                token.append(c);
+                i++;
+                c = characters[i];
+                if( Is.equalSign(c) ){
+                    token.append(c);
+                    tokenStream.addToken(new Token(token.toString(), Type.GREATER_EQUAL));
+                }
+                else {
+                    throw new SyntaxError(new Token(token.toString(), null),"Dangling exclamation mark");
+                }
+            }
         }
         return tokenStream;
     }

@@ -1,8 +1,12 @@
 package parsetree.expressions;
 
+import errors.RuntimeError;
 import errors.SyntaxError;
 import parsetree.GrammarObject;
 import parsetree.GrammarValue;
+import parsetree.expressions.Double.DoubleExpression;
+import parsetree.expressions.Integer.IntegerExpression;
+import parsetree.expressions.String.StringExpression;
 import scanner.Token;
 import scanner.TokenStream;
 
@@ -97,7 +101,7 @@ public class Expression extends GrammarObject implements GrammarValue {
 	 * @return value as the corresponding type
 	 */
 	@Override
-	public Object getValue() {
+	public Object getValue() throws RuntimeError {
 		return child.getValue();
 	}
 
