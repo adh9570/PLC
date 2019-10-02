@@ -26,7 +26,10 @@ class StringExpression extends GrammarObject implements GrammarValue{
 			obj = token.getValue();
 		}
 		else if( token.getType() == Token.Type.ID_OR_KEYWORD && token.getValue().equals("concat")) {
-			obj = new Concat(tokenStream);
+			obj = new Concat(this, tokenStream);
+		}
+		else if( token.getType() == Token.Type.ID_OR_KEYWORD && token.getValue().equals("charAt")){
+			obj = new CharAt(this, tokenStream);
 		}
 		else{
 			obj = getScope(token.getValue());
@@ -69,82 +72,103 @@ class StringExpression extends GrammarObject implements GrammarValue{
 	}
 
 
-	class Concat implements GrammarValue{
+}
 
-		Object obj1;
-		Object obj2;
+class Concat implements GrammarValue{
 
-		Concat(TokenStream tokenStream) throws SyntaxError {
+	private GrammarValue obj1;
+	private GrammarValue obj2;
 
-			// First Parenthesis
-			Token openParen = tokenStream.getNextToken();
-			if( openParen.getType() != Token.Type.START_PAREN ){
-				throw new SyntaxError(openParen, "Missing opening parenthesis for concat");
-			}
+	Concat(StringExpression parent, TokenStream tokenStream) throws SyntaxError {
 
-			Token token1 = tokenStream.getNextToken();
-
-			if( tokenStream.getNextToken().getType() != Token.Type.COMMA ){
-				throw new SyntaxError(token1, "Missing parameter for concat");
-			}
-			Token token2 = tokenStream.getNextToken();
-
-			if( token1.getType() == Token.Type.STRING ){
-				obj1 = token1.getValue();
-			}
-			else if( token1.getType() == Token.Type.ID_OR_KEYWORD ){
-				obj1 = getScope(token1.getValue());
-			}
-			else{
-				throw new SyntaxError(token1, "Improper type for concat paramater");
-			}
-
-			if( token2.getType() == Token.Type.STRING ){
-				obj2 = token2.getValue();
-			}
-			else if( token2.getType() == Token.Type.ID_OR_KEYWORD ){
-				obj2 = getScope(token2.getValue());
-			}
-			else{
-				throw new SyntaxError(token2, "Improper type for concat paramater");
-			}
-
-			// Second Parenthesis
-			Token closeParen = tokenStream.getNextToken();
-			if( closeParen.getType() != Token.Type.END_PAREN ){
-				throw new SyntaxError(closeParen, "Missing closing parenthesis for concat");
-			}
+		// First Parenthesis
+		Token openParen = tokenStream.getNextToken();
+		if( openParen.getType() != Token.Type.START_PAREN ){
+			throw new SyntaxError(openParen, "Missing opening parenthesis for concat");
 		}
 
+		obj1 = new StringExpression(parent, tokenStream);
 
-		@Override
-		public String getIdentifier() {
-			return null;
+		Token comma = tokenStream.getNextToken();
+		if( comma.getType() != Token.Type.COMMA ){
+			throw new SyntaxError(comma, "Missing parameter for concat");
 		}
 
-		@Override
-		public String getType() {
-			return STRING;
+		obj2 = new StringExpression(parent, tokenStream);
+
+		// Second Parenthesis
+		Token closeParen = tokenStream.getNextToken();
+		if( closeParen.getType() != Token.Type.END_PAREN ){
+			throw new SyntaxError(closeParen, "Missing closing parenthesis for concat");
+		}
+	}
+
+
+	@Override
+	public String getIdentifier() {
+		return null;
+	}
+
+	@Override
+	public String getType() {
+		return STRING;
+	}
+
+	@Override
+	public Object getValue() {
+		String val1 = obj1.getValue().toString();
+		String val2 = obj2.getValue().toString();
+
+		return val1 + val2;
+	}
+}
+
+
+class CharAt implements GrammarValue{
+
+	private GrammarValue obj1;
+	private GrammarValue obj2;
+
+	CharAt(StringExpression parent, TokenStream tokenStream) throws SyntaxError {
+
+		// First Parenthesis
+		Token openParen = tokenStream.getNextToken();
+		if( openParen.getType() != Token.Type.START_PAREN ){
+			throw new SyntaxError(openParen, "Missing opening parenthesis for charAt");
 		}
 
-		@Override
-		public Object getValue() {
-			String val1;
-			String val2;;
+		obj1 = new StringExpression(parent, tokenStream);
 
-			if(obj1 instanceof GrammarValue )
-				val1 = ((GrammarValue) obj1).getValue().toString();
-			else
-				val1 = obj1.toString();
-
-
-			if(obj2 instanceof GrammarValue )
-				val2 = ((GrammarValue) obj2).getValue().toString();
-			else
-				val2 = obj2.toString();
-
-
-			return val1 + val2;
+		Token comma = tokenStream.getNextToken();
+		if( comma.getType() != Token.Type.COMMA ){
+			throw new SyntaxError(comma, "Missing parameter for charAt");
 		}
+
+		obj2 = new IntegerExpression(parent, tokenStream);
+
+		// Second Parenthesis
+		Token closeParen = tokenStream.getNextToken();
+		if( closeParen.getType() != Token.Type.END_PAREN ){
+			throw new SyntaxError(closeParen, "Missing closing parenthesis for charAt");
+		}
+	}
+
+
+	@Override
+	public String getIdentifier() {
+		return null;
+	}
+
+	@Override
+	public String getType() {
+		return STRING;
+	}
+
+	@Override
+	public Object getValue() {
+		String val1 = obj1.getValue().toString();
+		int val2 = Integer.parseInt(obj2.getValue().toString());
+
+		return val1.charAt(val2);
 	}
 }

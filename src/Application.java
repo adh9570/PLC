@@ -36,9 +36,6 @@ public class Application{
         // Parse Code
         TokenStream tokenStream = scanner.scan();
 
-//        while( !tokenStream.isEmpty())
-//            out.println(tokenStream.getNextToken());
-
         // Run Code
         try {
             Program program = new Program(tokenStream);

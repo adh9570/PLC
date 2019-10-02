@@ -44,7 +44,7 @@ public class Expression extends GrammarObject implements GrammarValue {
 				child = new StringExpression(this, tokenStream);
 				break;
 			case ID_OR_KEYWORD:
-				if(((Token) token).getValue().equals("concat")){
+				if(((Token) token).getValue().equals("concat") || ((Token) token).getValue().equals("charAt")){
 					child = new StringExpression(this, tokenStream);
 					return;
 				}

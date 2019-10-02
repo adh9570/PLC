@@ -12,6 +12,7 @@ class Is {
     private Is(){}
 
     private static final char NEWLINE = '\n';
+    private static final char RETURN_LINE = '\r';
     private static final char SPACE = ' ';
     private static final char TAB = '\t';
     private static final char QUOTE = '"';
@@ -53,7 +54,7 @@ class Is {
     }
 
     static boolean newLine(char c){
-        return c == NEWLINE;
+        return c == NEWLINE || c == RETURN_LINE;
     }
 
     static boolean period(char c){
