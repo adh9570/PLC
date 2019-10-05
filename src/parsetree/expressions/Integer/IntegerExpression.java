@@ -9,6 +9,7 @@ import scanner.Token;
 import scanner.TokenStream;
 
 import static parsetree.Constants.INTEGER;
+import static scanner.Token.Type.*;
 
 @SuppressWarnings("DuplicatedCode")
 public class IntegerExpression extends GrammarObject implements GrammarValue {
@@ -31,15 +32,11 @@ public class IntegerExpression extends GrammarObject implements GrammarValue {
         obj1 = new Factor(this, tokenStream);
         Token operation = tokenStream.peekNextToken();
 
-        if( operation.getType() == Token.Type.ADD_OP ||
-                operation.getType() == Token.Type.MULT_OP)
-        {
+        if( isMathOperator(operation)) {
             this.operation = tokenStream.getNextToken();
             obj2 = new Factor(this, tokenStream);
 
-            if(tokenStream.peekNextToken().getType() == Token.Type.ADD_OP ||
-                    tokenStream.peekNextToken().getType() == Token.Type.MULT_OP)
-            {
+            if( isMathOperator(tokenStream.peekNextToken())) {
                 operation2 = tokenStream.getNextToken();
                 obj3 = new Expression(parent, tokenStream);
             }
@@ -86,8 +83,15 @@ public class IntegerExpression extends GrammarObject implements GrammarValue {
         }
         if (operation.getValue().equals("*"))
             return val1 * val2;
+        if (operation.getValue().equals("^"))
+            return (int) Math.pow(val1, val2);
 
         throw new RuntimeError(operation, "Mathematical Error");
+    }
+
+    private static boolean isMathOperator(Token token){
+        Token.Type t = token.getType();
+        return t == POWER || t == MULT_OP || t == ADD_OP;
     }
 
 }

@@ -164,12 +164,6 @@ public class Scanner {
                 i++;
             }
 
-            // Power
-            else if( Is.carrot(c) ){
-                token.append(c);
-                tokenStream.addToken(new Token(token.toString(), Type.POWER));
-                i++;
-            }
 
             // Comma
             else if( Is.comma(c) ) {
@@ -189,6 +183,13 @@ public class Scanner {
             else if( Is.div(c) || Is.mult(c) ) {
                 token.append(c);
                 tokenStream.addToken(new Token(token.toString(), Type.MULT_OP));
+                i++;
+            }
+
+            // Power
+            else if( Is.carrot(c) ){
+                token.append(c);
+                tokenStream.addToken(new Token(token.toString(), Type.POWER));
                 i++;
             }
 
