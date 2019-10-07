@@ -31,6 +31,10 @@ class Statement extends GrammarObject {
 
         Token nextToken = tokenStream.getNextToken();
         String token = nextToken.toString();
+        if( nextToken.getType() == Token.Type.END_STMT ){
+            return;
+        }
+
 
         // Print Option
         if( token.equals(PRINT)){

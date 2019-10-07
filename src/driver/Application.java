@@ -6,6 +6,7 @@ import parsetree.Program;
 import scanner.Scanner;
 import scanner.TokenStream;
 
+import static java.lang.System.*;
 import static java.lang.System.err;
 
 public class Application{
@@ -18,10 +19,10 @@ public class Application{
 
     public static void main(String[]args){
         if(args[0].equalsIgnoreCase("-v") || args[0].equalsIgnoreCase("-version")){
-            System.out.println("Jott version " + VERSION);
+            out.println("Jott version " + VERSION);
         }
         else if(args[0].equalsIgnoreCase("-h") || args[0].equalsIgnoreCase("-help")){
-            System.out.println("Usage: Jott [-options] jottfile [args...]");
+            out.println("Usage: Jott [-options] jottfile [args...]");
         }
 
         // Get Input

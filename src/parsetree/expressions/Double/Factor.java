@@ -26,9 +26,15 @@ class Factor extends GrammarObject implements GrammarValue {
         isNegated = false;
         Token val = tokenStream.getNextToken();
 
+
         if(val.getValue().equals("-")){
             isNegated = true;
-            val = tokenStream.getNextToken();
+            value = new Factor(this, tokenStream);
+            return;
+        }
+        else if(val.getValue().equals("+")){
+            value = new Factor(this, tokenStream);
+            return;
         }
 
 
@@ -38,9 +44,6 @@ class Factor extends GrammarObject implements GrammarValue {
                 if(!((GrammarValue) value).getType().equals(DOUBLE)){
                     throw new SyntaxError(val, "Type mismatch: Expected Double got " +
                             ((GrammarValue) value).getType());
-                }
-                else if(value == null){
-                    throw new SyntaxError(val, "Undeclared variable");
                 }
                 break;
             case NUMBER:
