@@ -31,7 +31,7 @@ class Print extends GrammarObject {
         Token openParen = tokenStream.getNextToken();
         //noinspection EqualsBetweenInconvertibleTypes
         if( !openParen.equals("(") ){
-            throw new SyntaxError(openParen, "Print statement missing opening parenthesis");
+            throw new SyntaxError(openParen, "Syntax Error: Expected ( got " + openParen.getValue());
         }
 
         new Expression(this, tokenStream);
@@ -39,7 +39,7 @@ class Print extends GrammarObject {
         Token closedParen = tokenStream.getNextToken();
         //noinspection EqualsBetweenInconvertibleTypes
         if( !closedParen.equals(")") ){
-            throw new SyntaxError(closedParen, "Print statement missing closing parenthesis");
+            throw new SyntaxError(closedParen, "Syntax Error: Expected ) got " + closedParen.getValue());
         }
 
     }

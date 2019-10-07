@@ -11,25 +11,25 @@ class Is {
 
     private Is(){}
 
-    private static final char NEWLINE = '\n';
-    private static final char RETURN_LINE = '\r';
-    private static final char SPACE = ' ';
-    private static final char TAB = '\t';
-    private static final char QUOTE = '"';
-    private static final char PERIOD = '.';
-    private static final char EQUAL = '=';
-    private static final char SEMICOLON = ';';
-    private static final char START_PAREN = '(';
-    private static final char END_PAREN = ')';
-    private static final char PLUS = '+';
-    private static final char MINUS = '-';
-    private static final char MULT = '*';
-    private static final char DIVIDE = '/';
-    private static final char CARROT = '^';
-    private static final char COMMA = ',';
-    private static final char LESS_THAN = '<';
-    private static final char GREATER_THAN = '>';
-    private static final char EXCLAMATION = '!';
+    public static final char NEWLINE = '\n';
+    public static final char RETURN_LINE = '\r';
+    public static final char SPACE = ' ';
+    public static final char TAB = '\t';
+    public static final char QUOTE = '"';
+    public static final char PERIOD = '.';
+    public static final char EQUAL = '=';
+    public static final char SEMICOLON = ';';
+    public static final char START_PAREN = '(';
+    public static final char END_PAREN = ')';
+    public static final char PLUS = '+';
+    public static final char MINUS = '-';
+    public static final char MULT = '*';
+    public static final char DIVIDE = '/';
+    public static final char CARROT = '^';
+    public static final char COMMA = ',';
+    public static final char LESS_THAN = '<';
+    public static final char GREATER_THAN = '>';
+    public static final char EXCLAMATION = '!';
 
 
     static boolean character(char c){
@@ -57,7 +57,11 @@ class Is {
     }
 
     static boolean newLine(char c){
-        return c == NEWLINE || c == RETURN_LINE;
+        return c == NEWLINE;
+    }
+
+    static boolean breakLine(char c){
+        return c == RETURN_LINE;
     }
 
     static boolean period(char c){

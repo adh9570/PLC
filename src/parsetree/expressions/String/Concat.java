@@ -26,7 +26,7 @@ class Concat implements GrammarValue {
 
         Token comma = tokenStream.getNextToken();
         if( comma.getType() != Token.Type.COMMA ){
-            throw new SyntaxError(comma, "Missing parameter for concat");
+            throw new SyntaxError(comma, "Expected , got " + comma.getValue());
         }
 
         obj2 = new StringExpression(parent, tokenStream);
@@ -34,7 +34,7 @@ class Concat implements GrammarValue {
         // Second Parenthesis
         Token closeParen = tokenStream.getNextToken();
         if( closeParen.getType() != Token.Type.END_PAREN ){
-            throw new SyntaxError(closeParen, "Missing closing parenthesis for concat");
+            throw new SyntaxError(closeParen, "Expected ) got" + closeParen.getValue());
         }
     }
 

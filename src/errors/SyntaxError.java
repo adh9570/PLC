@@ -2,6 +2,8 @@ package errors;
 
 import scanner.Token;
 
+import static driver.Application.*;
+
 public class SyntaxError extends Exception {
 
 	/**
@@ -12,9 +14,9 @@ public class SyntaxError extends Exception {
 	 */
 	public SyntaxError(Token token, String error){
 		super(
-			"Syntax Error: " + error +"\n" +
-				"\t Error at:" + token.getLine() +
-				"'" + token.getValue() + "'"
+			"Syntax Error: " + error +
+					", \"" + SCANNER.getLine(token.getLine()) + "\" " +
+					"(" + FILE_NAME + ":" + token.getLine() + ")"
 		);
 	}
 

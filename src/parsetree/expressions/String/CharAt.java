@@ -27,7 +27,7 @@ class CharAt implements GrammarValue {
 
         Token comma = tokenStream.getNextToken();
         if( comma.getType() != Token.Type.COMMA ){
-            throw new SyntaxError(comma, "Missing parameter for charAt");
+            throw new SyntaxError(comma, "Syntax Error: Expected , got " + comma.getValue());
         }
 
         obj2 = new IntegerExpression(parent, tokenStream);

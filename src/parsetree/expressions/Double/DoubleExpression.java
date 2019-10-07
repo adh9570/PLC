@@ -77,7 +77,7 @@ public class DoubleExpression extends GrammarObject implements GrammarValue {
             return val1 - val2;
         if (operation.getValue().equals("/")) {
             if (val2 == 0 ) {
-                throw new RuntimeError(operation, "Division by 0");
+                throw new RuntimeError(operation, "Divide by zero");
             }
             return val1 / val2;
         }

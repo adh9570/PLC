@@ -99,4 +99,15 @@ public class TokenStream {
     public void subtractFromIndex(int i){
         index = index - i;
     }
+
+    public String getLine(int line) {
+        StringBuilder str = new StringBuilder();
+        tokens.forEach((i) -> {
+            if(i.getLine() == line){
+                str.append(" ");
+                str.append(i.toString());
+            }
+        });
+        return str.toString();
+    }
 }

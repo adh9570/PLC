@@ -85,10 +85,10 @@ public class Token {
      * @param token String representation of the token
      * @param type State that the token will represent
      */
-    Token(String token, Type type){
+    Token(String token, Type type, int lineNumber){
         value = token;
         this.type = type;
-        line = 0;
+        line = lineNumber;
     }
 
 

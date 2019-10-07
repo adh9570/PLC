@@ -37,6 +37,8 @@ public class Expression extends GrammarObject implements GrammarValue {
 
 
 		switch (type) {
+			case ADD_OP:
+				token = tokenStream.peekNextToken(2);
 			case NUMBER:
 				if (((Token) token).getValue().contains(".")) {
 					child = new DoubleExpression(this, tokenStream);
