@@ -1,28 +1,26 @@
-package parsetree.expressions;
+package parsetree.builtin;
 
 import driver.JottError;
 import parsetree.entity.JottEntity;
-import parsetree.expressions.booleanexpression.BooleanExpression;
-import parsetree.expressions.doubleexpression.DoubleExpression;
-import parsetree.expressions.integerexpression.IntegerExpression;
-import parsetree.expressions.stringexpression.StringExpression;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-public class Expression extends JottEntity {
-
-    private JottEntity child;
+public class BuiltInFunction extends JottEntity {
 
     private static final Class[] ChildTypes = {
-            BooleanExpression.class,
-            IntegerExpression.class,
-            DoubleExpression.class,
-            StringExpression.class,
+            Print.class,
     };
 
-    public Expression(JottEntity parent) throws JottError.JottException {
+    private JottEntity child;
+    public BuiltInFunction(JottEntity parent) {
         super(parent);
+    }
+
+    @SuppressWarnings("Duplicates")
+    @Override
+    public void construct() throws JottError.JottException {
+        child = null;
 
         for( Class<?> type: ChildTypes ){
             try {
@@ -36,7 +34,7 @@ public class Expression extends JottEntity {
             }
             catch (NoSuchMethodException | InstantiationException |
                 IllegalAccessException | InvocationTargetException ignored) {
-                //ignored
+                // Ignored
             }
         }
 
@@ -48,15 +46,6 @@ public class Expression extends JottEntity {
         child.establish();
     }
 
-    @Override
-    public Object getValue() throws JottError.JottException {
-        return child.getValue();
-    }
-
-    @Override
-    public boolean isValid() {
-        return child != null;
-    }
 
     @Override
     public Class getType() {

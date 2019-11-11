@@ -26,13 +26,21 @@ public class TokenStream {
      */
     private int index;
 
+    /**
+     * rawFile
+     *
+     * Raw Text File of input
+     */
+    private String rawFile;
+
 
     /**
      * Constructor()
      */
-    TokenStream(){
+    TokenStream(String fileData){
         tokens = new ArrayList<>();
         index = 0;
+        rawFile = fileData;
     }
 
 
@@ -91,23 +99,16 @@ public class TokenStream {
     }
 
 
-    /**
-     * subtractFromIndex
-     *
-     * @param i int value to move pointer back
-     */
-    public void subtractFromIndex(int i){
-        index = index - i;
+    public String getLine(int line) {
+        String lineData = rawFile.split("\n")[line - 1];
+        return lineData.replace("\r", "");
     }
 
-    public String getLine(int line) {
-        StringBuilder str = new StringBuilder();
-        tokens.forEach((i) -> {
-            if(i.getLine() == line){
-                str.append(" ");
-                str.append(i.toString());
-            }
-        });
-        return str.toString();
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 }

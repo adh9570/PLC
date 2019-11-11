@@ -1,28 +1,22 @@
-package parsetree.expressions;
+package parsetree.recursion;
 
 import driver.JottError;
 import parsetree.entity.JottEntity;
-import parsetree.expressions.booleanexpression.BooleanExpression;
-import parsetree.expressions.doubleexpression.DoubleExpression;
-import parsetree.expressions.integerexpression.IntegerExpression;
-import parsetree.expressions.stringexpression.StringExpression;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-public class Expression extends JottEntity {
+public class Recursion extends JottEntity {
+    private static final Class[] ChildTypes = {
+            For.class,
+            While.class,
+    };
 
     private JottEntity child;
 
-    private static final Class[] ChildTypes = {
-            BooleanExpression.class,
-            IntegerExpression.class,
-            DoubleExpression.class,
-            StringExpression.class,
-    };
-
-    public Expression(JottEntity parent) throws JottError.JottException {
+    public Recursion(JottEntity parent) throws JottError.JottException {
         super(parent);
+        child = null;
 
         for( Class<?> type: ChildTypes ){
             try {
@@ -36,26 +30,16 @@ public class Expression extends JottEntity {
             }
             catch (NoSuchMethodException | InstantiationException |
                 IllegalAccessException | InvocationTargetException ignored) {
-                //ignored
+                // Ignored
             }
         }
 
-        if(child == null) {
+        if(child == null ){
             invalidate();
             return;
         }
 
         child.establish();
-    }
-
-    @Override
-    public Object getValue() throws JottError.JottException {
-        return child.getValue();
-    }
-
-    @Override
-    public boolean isValid() {
-        return child != null;
     }
 
     @Override

@@ -1,22 +1,20 @@
 package parsetree;
 
+import driver.JottError;
+import parsetree.entity.JottEntity;
 import scanner.TokenStream;
 
-/**
- * Program ( Class )
- * Extends: {@link GrammarObject}
- *
- * Program is the root node to the program.
- *  This class constructs the whole parse tree given
- *  a token stream.
- */
-public class Program extends GrammarObject {
+public class Program extends JottEntity {
 
-    public Program(TokenStream tokenStream) throws Exception{
-        super(null);
+    public Program(TokenStream tokenStream, JottError error) throws JottError.JottException {
+        super(tokenStream, error);
+        initScope();
 
         while(!tokenStream.isEmpty()){
-            new Statement(this, tokenStream);
+            JottEntity child = new Statement(this);
+            child.construct();
+            if(child.isValid())
+                child.establish();
         }
     }
 

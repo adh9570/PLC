@@ -1,58 +1,81 @@
 package parsetree;
 
-import errors.SyntaxError;
+import driver.JottError;
+import parsetree.builtin.BuiltInFunction;
+import parsetree.conditional.Conditional;
+import parsetree.conditional.If;
+import parsetree.entity.JottEntity;
+import parsetree.expressions.Expression;
+import parsetree.recursion.For;
+import parsetree.recursion.Recursion;
+import parsetree.recursion.While;
+import parsetree.variables.Variable;
 import scanner.Token;
-import scanner.TokenStream;
 
-import static parsetree.Constants.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
-/**
- * Statement Class
- * Extends {@link GrammarObject}
- *
- * This class is used to hold the statements
- *  withing the parse tree.
- */
-class Statement extends GrammarObject {
+public class Statement extends JottEntity {
 
-    // Key Words or Reserved Words
-    private static final String PRINT = "print";
+    private static final Class[] ChildTypes = {
+            Variable.class,
+            Conditional.class,
+            Recursion.class,
+            BuiltInFunction.class,
+            Expression.class,
+    };
 
-
-    /**
-     * Constructor(GrammarObject, TokenStream)
-     *
-     * @param parent - Parent object, should be a Program.
-     * @param tokenStream - Stream of tokens with current index.
-     * @throws SyntaxError - Any errors that my have occurred in parsing.
-     */
-    Statement(GrammarObject parent, TokenStream tokenStream) throws SyntaxError {
+    public Statement(JottEntity parent) {
         super(parent);
+    }
 
-        Token nextToken = tokenStream.getNextToken();
-        String token = nextToken.toString();
-        if( nextToken.getType() == Token.Type.END_STMT ){
+    @SuppressWarnings("Duplicates")
+    @Override
+    public void construct() throws JottError.JottException {
+
+        JottEntity child = null;
+
+        for( Class<?> type: ChildTypes ){
+            try {
+                Constructor<?> constructor = type.getConstructor(JottEntity.class);
+                child = (JottEntity) constructor.newInstance(this);
+                child.construct();
+                if(child.isValid()){
+                    break;
+                }
+                child = null;
+            }
+            catch (NoSuchMethodException | InstantiationException |
+                IllegalAccessException | InvocationTargetException ignored) {
+                // Ignored
+            }
+        }
+
+        if(child == null ){
+            invalidate();
             return;
         }
 
+        child.establish();
 
-        // Print Option
-        if( token.equals(PRINT)){
-            new Print(this, tokenStream);
+        if(child.getType() == If.class ){
+            return;
+        }
+        if(child.getType() == While.class ){
+            return;
+        }
+        if(child.getType() == For.class ){
+            return;
         }
 
-        else if( token.equals(INTEGER) || token.equals(DOUBLE) ||
-            token.equals(STRING))
-        {
-            new Assignment(this, tokenStream);
+        try {
+            Token end = tokenStream.getNextToken();
+            if (end.getType() != Token.Type.END_STMT) {
+                error.throwSyntax("Expected ;", end);
+            }
         }
-
-
-        // No SemiColon
-        Token endStmt = tokenStream.getNextToken();
-        if( endStmt.getType() != Token.Type.END_STMT ){
-            throw new SyntaxError(endStmt, "Missing semicolon");
+        catch (NullPointerException e){
+            error.throwSyntax("Expected ; on last line");
         }
     }
-
 }

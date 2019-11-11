@@ -1,6 +1,6 @@
 package scanner;
 
-import errors.SyntaxError;
+import driver.JottError;
 import scanner.Token.Type;
 
 import static scanner.Is.*;
@@ -11,7 +11,7 @@ import static scanner.Is.*;
  *  The scanning class is used to parse the code into
  *      a token stream. See {@link TokenStream}
  */
-public class Scanner {
+public class  Scanner {
 
     /**
      * preScanned
@@ -20,13 +20,16 @@ public class Scanner {
      */
     private final String preScanned;
 
+    private JottError error;
+
     /**
      * Constructor(String)
      *
      * @param str - String to be scanned
      */
-    public Scanner(String str) {
+    public Scanner(String str, JottError error) {
         preScanned = str;
+        this.error = error;
     }
 
 
@@ -38,10 +41,11 @@ public class Scanner {
      *
      * @return TokenStream - tokenStream derived from preScanned
      */
-    public TokenStream scan() throws SyntaxError{
+    public TokenStream scan() throws JottError.JottException {
 
         String pre = preScanned.replaceAll("//.*|(\"(?:\\\\[^\"]|\\\\\"|.)*?\")|(?s)/\\*.*?\\*/", "$1");
-        TokenStream tokenStream = new TokenStream();
+        TokenStream tokenStream = new TokenStream(pre);
+        error.setTokenStream(tokenStream);
         char[] characters = pre.toCharArray();
         int i = 0;
         int lineNumber = 1;
@@ -75,7 +79,8 @@ public class Scanner {
                         i++;
                     }
                     else{
-                        throw new SyntaxError(new Token(token.toString(), Type.STRING, lineNumber),"Missing \"");
+                        Token token_ = new Token(token.toString(), Type.STRING, lineNumber);
+                        error.throwSyntax("Missing \"", token_);
                     }
                     break;
                 case PERIOD:
@@ -84,7 +89,8 @@ public class Scanner {
                     while( Is.period(c) || Is.digit(c) ){
                         if( Is.period(c) ){
                             if( hasPeriod ){
-                                throw new SyntaxError(new Token("", Type.NUMBER, lineNumber), "To many decimal places");
+                                Token token_ = new Token("", Type.NUMBER, lineNumber);
+                                error.throwSyntax("To many decimal places", token_);
                             }
                             hasPeriod = true;
                         }
@@ -122,6 +128,16 @@ public class Scanner {
                     tokenStream.addToken(new Token(token.toString(), Type.END_PAREN, lineNumber));
                     i++;
                     break;
+                case START_BRACKET:
+                    token.append(c);
+                    tokenStream.addToken(new Token(token.toString(), Type.START_BRACKET, lineNumber));
+                    i++;
+                    break;
+                case END_BRACKET:
+                    token.append(c);
+                    tokenStream.addToken(new Token(token.toString(), Type.END_BRACKET, lineNumber));
+                    i++;
+                    break;
                 case COMMA:
                     token.append(c);
                     tokenStream.addToken(new Token(token.toString(), Type.COMMA, lineNumber));
@@ -150,6 +166,8 @@ public class Scanner {
                     c = characters[i];
                     if( Is.equalSign(c) ){
                         token.append(c);
+                        i++;
+                        c = characters[i];
                         tokenStream.addToken(new Token(token.toString(), Type.LESS_EQ, lineNumber));
                         i++;
                     }
@@ -163,6 +181,8 @@ public class Scanner {
                     c = characters[i];
                     if( Is.equalSign(c) ){
                         token.append(c);
+                        i++;
+                        c = characters[i];
                         tokenStream.addToken(new Token(token.toString(), Type.GREATER_EQUAL, lineNumber));
                     }
                     else {
@@ -175,11 +195,13 @@ public class Scanner {
                     c = characters[i];
                     if( Is.equalSign(c) ){
                         token.append(c);
-                        tokenStream.addToken(new Token(token.toString(), Type.GREATER_EQUAL, lineNumber));
+                        i++;
+                        c = characters[i];
+                        tokenStream.addToken(new Token(token.toString(), Type.NOT_EQUAL, lineNumber));
                     }
                     else {
-                        throw new SyntaxError(new Token(token.toString(), null, lineNumber),
-                                "Dangling exclamation mark");
+                        Token token_ = new Token(token.toString(), null, lineNumber);
+                        error.throwSyntax("Dangling exclamation mark", token_);
                     }
                     break;
                 default:
@@ -196,6 +218,7 @@ public class Scanner {
                 }
                 tokenStream.addToken(new Token(token.toString(), Type.ID_OR_KEYWORD, lineNumber));
             }
+
             // Number
             else if( Is.period(c) || Is.digit(c) ){
                 boolean hasPeriod = Is.period(c);
@@ -203,7 +226,8 @@ public class Scanner {
                 while( Is.period(c) || Is.digit(c) ){
                     if( Is.period(c) ){
                         if( hasPeriod ){
-                            throw new SyntaxError(new Token("", Type.NUMBER, lineNumber), "To many decimal places");
+                            Token token_ = new Token("", Type.NUMBER, lineNumber);
+                            error.throwSyntax("To many decimal places", token_);
                         }
                         hasPeriod = true;
                     }
@@ -211,7 +235,8 @@ public class Scanner {
                     token.append(c);
                     i++;
                     if( i >= characters.length ){
-                        throw new SyntaxError(new Token("", Type.END_STMT, lineNumber), "missing semi-colon");
+                        Token token_ = new Token("", Type.END_STMT, lineNumber);
+                        error.throwSyntax("missing semi-colon", token_);
                     }
                     c = characters[i];
                 }

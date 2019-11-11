@@ -9,7 +9,6 @@ package scanner;
  * This is the object that is used by the grammar
  *  to form the workings of the program.
  *
- *  TODO: Add a way to keep line information
  */
 public class Token {
 
@@ -30,9 +29,12 @@ public class Token {
         END_STMT(),
         START_PAREN(),
         END_PAREN(),
+        START_BRACKET(),
+        END_BRACKET(),
         POWER(),
         COMMA(),
         EQ(),
+        NOT_EQUAL(),
         ADD_OP(),
         MULT_OP(),
         LESS(),

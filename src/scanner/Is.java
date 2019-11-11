@@ -11,25 +11,27 @@ class Is {
 
     private Is(){}
 
-    public static final char NEWLINE = '\n';
-    public static final char RETURN_LINE = '\r';
-    public static final char SPACE = ' ';
-    public static final char TAB = '\t';
-    public static final char QUOTE = '"';
-    public static final char PERIOD = '.';
-    public static final char EQUAL = '=';
-    public static final char SEMICOLON = ';';
-    public static final char START_PAREN = '(';
-    public static final char END_PAREN = ')';
-    public static final char PLUS = '+';
-    public static final char MINUS = '-';
-    public static final char MULT = '*';
-    public static final char DIVIDE = '/';
-    public static final char CARROT = '^';
-    public static final char COMMA = ',';
-    public static final char LESS_THAN = '<';
-    public static final char GREATER_THAN = '>';
-    public static final char EXCLAMATION = '!';
+    static final char NEWLINE = '\n';
+    static final char RETURN_LINE = '\r';
+    static final char SPACE = ' ';
+    static final char TAB = '\t';
+    static final char QUOTE = '"';
+    static final char PERIOD = '.';
+    static final char EQUAL = '=';
+    static final char SEMICOLON = ';';
+    static final char START_PAREN = '(';
+    static final char END_PAREN = ')';
+    static final char START_BRACKET = '{';
+    static final char END_BRACKET = '}';
+    static final char PLUS = '+';
+    static final char MINUS = '-';
+    static final char MULT = '*';
+    static final char DIVIDE = '/';
+    static final char CARROT = '^';
+    static final char COMMA = ',';
+    static final char LESS_THAN = '<';
+    static final char GREATER_THAN = '>';
+    static final char EXCLAMATION = '!';
 
 
     static boolean character(char c){
