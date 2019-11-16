@@ -16,7 +16,7 @@ public class Reassignment extends JottEntity {
 
     @Override
     public void construct() throws JottError.JottException {
-        if(tokenStream.peekNextToken(2).getType() != Token.Type.ASSIGN){
+        if(tokenStream.peekNextToken(2) != null && tokenStream.peekNextToken(2).getType() != Token.Type.ASSIGN){
             invalidate();
             return;
         }

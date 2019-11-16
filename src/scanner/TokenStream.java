@@ -84,6 +84,9 @@ public class TokenStream {
      * @return token {@link Token}
      */
     public Token peekNextToken(int i){
+        if(index + (i- 1) >= tokens.size()){
+            return null;
+        }
         return tokens.get(index + (i- 1));
     }
 

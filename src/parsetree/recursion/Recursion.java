@@ -9,7 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 public class Recursion extends JottEntity {
     private static final Class[] ChildTypes = {
             For.class,
-            While.class,
+            While.class
     };
 
     private JottEntity child;

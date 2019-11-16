@@ -12,6 +12,7 @@ public class Variable extends JottEntity {
 
 
     private static final Class[] ChildTypes = {
+            Function.class,
             Assignment.class,
             Reassignment.class
     };
@@ -45,5 +46,10 @@ public class Variable extends JottEntity {
         }
 
         child.establish();
+    }
+
+    @Override
+    public Class getType() {
+        return child.getType();
     }
 }

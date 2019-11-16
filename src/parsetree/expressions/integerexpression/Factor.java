@@ -2,6 +2,7 @@ package parsetree.expressions.integerexpression;
 
 import driver.JottError;
 import parsetree.entity.JottEntity;
+import parsetree.expressions.functioncall.FunctionExpression;
 import scanner.Token;
 
 import static driver.ReservedWords.isReserved;
@@ -21,6 +22,14 @@ public class Factor extends JottEntity {
     @SuppressWarnings("Duplicates")
     @Override
     public void construct() throws JottError.JottException {
+        FunctionExpression functionExpression = new FunctionExpression(this);
+        functionExpression.construct();
+        if(functionExpression.isValid()){
+            id = functionExpression.getId();
+            type = functionExpression.getType();
+            return;
+        }
+
         isNegated = false;
         Token val = tokenStream.getNextToken();
         if(val.getType() == Token.Type.STRING){
@@ -51,9 +60,9 @@ public class Factor extends JottEntity {
                 }
 
                 id = val;
-                value = findInScope(val.getValue(), val);
-                if( ((JottEntity) value).getType() != Integer.class ){
-                    type = ((JottEntity) value).getType();
+                JottEntity _value = findInScope(id.getValue(), id);
+                if( _value.getType() != Integer.class ){
+                    type = _value.getType();
                     invalidate();
                     return;
                 }
@@ -84,20 +93,29 @@ public class Factor extends JottEntity {
     }
 
     @Override
-    public Object getValue() throws JottError.JottException {
-        if( id != null )
-            return findInScope(id.getValue(), id).getValue();
-
+    public Object getValue() throws JottError.JottException{
         int val = 1;
         if(isNegated)
             val = -1;
 
-        if( value instanceof JottEntity ) {
-            val *= Integer.parseInt(((JottEntity) value).getValue().toString());
+        if( id != null ){
+            JottEntity _value = findInScope(id.getValue(), id);
+            _value.execute();
+            val *= Integer.parseInt( _value.getValue().toString() );
             return val;
         }
 
-        return val * Integer.parseInt(value.toString());
+        if( value instanceof JottEntity){
+            System.out.println(value);
+            int temp = (int) ((JottEntity) value).getValue();
+
+            val = val * temp;
+        }
+        else{
+            val = val * Integer.parseInt(value.toString());
+        }
+
+        return val;
     }
 
     @Override

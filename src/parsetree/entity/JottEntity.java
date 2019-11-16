@@ -15,7 +15,7 @@ public class JottEntity implements ParseTreeEntity, RunTimeEntity {
     private boolean hasScope;
     private Map<String, JottEntity> scope;
     protected final TokenStream tokenStream;
-    private final List<JottEntity> children;
+    protected final List<JottEntity> children;
     protected final JottError error;
     protected boolean valid;
     private int start;
@@ -88,7 +88,7 @@ public class JottEntity implements ParseTreeEntity, RunTimeEntity {
 
     @Override
     public void scopeVariable(String keyword, JottEntity value) {
-        JottEntity parentScope = this;
+        JottEntity parentScope = parent;
         while( parentScope != null ){
             if(parentScope.hasScope){
                 parentScope.scope.put(keyword, value);
@@ -111,7 +111,9 @@ public class JottEntity implements ParseTreeEntity, RunTimeEntity {
             parentScope = parentScope.parent;
         }
 
-        error.throwRuntime("Variable not initialized", errorToken);
+        System.out.println("Variable not initialized : " + keyword);
+        System.exit(0);
+        error.throwRuntime("Variable not initialized : " + keyword, errorToken);
         return null;
     }
 

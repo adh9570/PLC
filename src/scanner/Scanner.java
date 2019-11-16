@@ -45,6 +45,7 @@ public class  Scanner {
 
         String pre = preScanned.replaceAll("//.*|(\"(?:\\\\[^\"]|\\\\\"|.)*?\")|(?s)/\\*.*?\\*/", "$1");
         TokenStream tokenStream = new TokenStream(pre);
+        pre = preScanned.replaceAll("}", "};");
         error.setTokenStream(tokenStream);
         char[] characters = pre.toCharArray();
         int i = 0;

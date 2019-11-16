@@ -14,7 +14,6 @@ public class Jott {
     }
 
     private static void runFile(String filename) throws JottError.JottException {
-        out.println("\n===========================" + filename + "============================");
         TokenStream tokenStream;
         JottError error = new JottError();
 
@@ -43,11 +42,18 @@ public class Jott {
         if (args[0].equalsIgnoreCase("-h") || args[0].equalsIgnoreCase("--help"))
             usage();
 
-        try {
-            runFile(args[0]);
-        }
-        catch (JottError.JottException ignored) {
-            // Ignored
+//        try {
+//            runFile(args[0]);
+//        }
+//        catch (JottError.JottException ignored) {
+//            // Ignored
+//        }
+        for( int i = 0; i < 25; i++) {
+            try {
+                runFile("prog" + i + ".j");
+            } catch (JottError.JottException ignored) {
+                // Ignored
+            }
         }
     }
 

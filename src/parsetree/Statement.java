@@ -3,12 +3,9 @@ package parsetree;
 import driver.JottError;
 import parsetree.builtin.BuiltInFunction;
 import parsetree.conditional.Conditional;
-import parsetree.conditional.If;
 import parsetree.entity.JottEntity;
 import parsetree.expressions.Expression;
-import parsetree.recursion.For;
 import parsetree.recursion.Recursion;
-import parsetree.recursion.While;
 import parsetree.variables.Variable;
 import scanner.Token;
 
@@ -40,6 +37,10 @@ public class Statement extends JottEntity {
                 Constructor<?> constructor = type.getConstructor(JottEntity.class);
                 child = (JottEntity) constructor.newInstance(this);
                 child.construct();
+                Token end = tokenStream.getNextToken();
+                if (end.getType() != Token.Type.END_STMT) {
+                    child.invalidate();
+                }
                 if(child.isValid()){
                     break;
                 }
@@ -57,25 +58,6 @@ public class Statement extends JottEntity {
         }
 
         child.establish();
-
-        if(child.getType() == If.class ){
-            return;
-        }
-        if(child.getType() == While.class ){
-            return;
-        }
-        if(child.getType() == For.class ){
-            return;
-        }
-
-        try {
-            Token end = tokenStream.getNextToken();
-            if (end.getType() != Token.Type.END_STMT) {
-                error.throwSyntax("Expected ;", end);
-            }
-        }
-        catch (NullPointerException e){
-            error.throwSyntax("Expected ; on last line");
-        }
     }
+
 }

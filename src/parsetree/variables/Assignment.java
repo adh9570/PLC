@@ -15,8 +15,8 @@ public class Assignment extends JottEntity {
             "Double",
             "Integer"
     );
-    private Token type;
-    private Token id;
+
+    private Declaration declaration;
     private Expression value;
 
     public Assignment(JottEntity parent) {
@@ -25,51 +25,34 @@ public class Assignment extends JottEntity {
 
     @Override
     public void construct() throws JottError.JottException {
-        type = tokenStream.getNextToken();
-        if( !TYPES.contains(type.getValue()) ){
+        Token initialToken = tokenStream.peekNextToken();
+        declaration = new Declaration(this);
+        declaration.construct();
+        if(!declaration.isValid()){
             invalidate();
             return;
         }
 
-        id = tokenStream.getNextToken();
         Token assigmentSign = tokenStream.getNextToken();
-
-        if( id.getType() != Token.Type.ID_OR_KEYWORD){
-            error.throwSyntax("Improper variable assignment", id);
-        }
-
         if ( assigmentSign.getType() != Token.Type.ASSIGN ){
-            error.throwSyntax( "Missing = on variable assigment", id);
+            error.throwSyntax( "Missing = on variable assigment", initialToken);
         }
 
         value = new Expression(this);
         value.construct();
-        value.establish();
 
-        if( !value.getType().getSimpleName().equals(type.toString()) ){
-            String message = "Type mismatch: Expected " +type.toString()
+        if( value.getType() != declaration.getType() ){
+            String message = "Type mismatch: Expected " + declaration.getType()
                 + " got " + value.getType().getSimpleName();
-            error.throwSyntax( message, type);
+            error.throwSyntax( message, initialToken);
         }
 
-        Value v = new Value(this);
-        v.setValue(value.getValue());
-        v.setType(value.getType());
-        scopeVariable(id.getValue(), v);
+        declaration.bind(null);
     }
 
     @Override
     public Class getType() {
-        if ("String".equals(type.getValue())) {
-            return String.class;
-        }
-        else if ("Integer".equals(type.getValue())) {
-            return Integer.class;
-        }
-        else if ("Double".equals(type.getValue())) {
-            return Double.class;
-        }
-        return null;
+        return declaration.getType();
     }
 
     @Override
@@ -79,9 +62,6 @@ public class Assignment extends JottEntity {
 
     @Override
     public void execute() throws JottError.JottException {
-        Value v = new Value(this);
-        v.setValue(value.getValue());
-        v.setType(value.getType());
-        scopeVariable(id.getValue(), v);
+        declaration.bind(value.getValue());
     }
 }
