@@ -6,7 +6,7 @@ import scanner.TokenStream;
 
 import static java.lang.System.out;
 
-public class Jott {
+public class Application {
 
     private static void usage(){
         out.println("Usage: Jott [-options] jottfile [args...]");
