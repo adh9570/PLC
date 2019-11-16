@@ -14,7 +14,6 @@ public class Jott {
     }
 
     private static void runFile(String filename) throws JottError.JottException {
-        out.println("\n===========================" + filename + "============================");
         TokenStream tokenStream;
         JottError error = new JottError();
 
@@ -49,6 +48,7 @@ public class Jott {
         catch (JottError.JottException ignored) {
             // Ignored
         }
+
     }
 
 }

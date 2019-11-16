@@ -28,7 +28,7 @@ public class JottError {
         out.print("Syntax Error: " + message);
         out.print(", \"");
         out.print(tokenStream.getLine(token.getLine()));
-        out.println("\" " +"(inputs/" + filename + ":" + token.getLine() + ")");
+        out.println("\" " +"(" + filename + ":" + token.getLine() + ")");
         throw new JottException();
     }
 
@@ -49,7 +49,7 @@ public class JottError {
         String errorMessage = "Runtime Error: " +
                 message +
                 ", \"" + tokenStream.getLine(token.getLine()) + "\" " +
-                "(inputs/" + filename + ":" + token.getLine() + ")";
+                "(" + filename + ":" + token.getLine() + ")";
         out.println(errorMessage);
         throw new JottException();
     }

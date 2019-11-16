@@ -38,9 +38,6 @@ public class If extends JottEntity {
         condition = new Expression(this);
         condition.construct();
         condition.establish();
-        if(condition.getType() != Integer.class){
-            error.throwSyntax("Condition of if statement must be integer", _if);
-        }
 
         Token close = tokenStream.getNextToken();
         if( !close.getValue().equals(")") ){
@@ -87,7 +84,8 @@ public class If extends JottEntity {
 
     @Override
     public void execute() throws JottError.JottException {
-        if((int)condition.getValue() == 1){
+
+        if(condition.getType() == Integer.class && (int)condition.getValue() == 1){
             for( JottEntity entity : ifStatementList )
                 entity.execute();
         }
