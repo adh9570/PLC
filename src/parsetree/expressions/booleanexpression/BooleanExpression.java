@@ -49,7 +49,7 @@ public class BooleanExpression  extends JottEntity {
         Token initialToken = tokenStream.peekNextToken();
 
         obj1 = getNextExpression();
-        if( obj1 == null ){
+        if( obj1 == null || !obj1.isValid() ){
             invalidate();
             return;
         }
@@ -61,7 +61,7 @@ public class BooleanExpression  extends JottEntity {
         }
 
         obj2 = getNextExpression();
-        if( obj2 == null ){
+        if( obj2 == null || !obj2.isValid() ){
             invalidate();
             return;
         }

@@ -98,6 +98,7 @@ public class Factor extends JottEntity {
         if(isNegated)
             val = -1;
 
+
         if( id != null ){
             JottEntity _value = findInScope(id.getValue(), id);
             _value.execute();
@@ -106,7 +107,6 @@ public class Factor extends JottEntity {
         }
 
         if( value instanceof JottEntity){
-            System.out.println(value);
             int temp = (int) ((JottEntity) value).getValue();
 
             val = val * temp;

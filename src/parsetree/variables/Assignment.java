@@ -35,14 +35,19 @@ public class Assignment extends JottEntity {
 
         Token assigmentSign = tokenStream.getNextToken();
         if ( assigmentSign.getType() != Token.Type.ASSIGN ){
-            error.throwSyntax( "Missing = on variable assigment", initialToken);
+            invalidate();
+            return;
         }
 
         value = new Expression(this);
         value.construct();
+        if(!value.isValid()){
+            invalidate();
+            return;
+        }
 
         if( value.getType() != declaration.getType() ){
-            String message = "Type mismatch: Expected " + declaration.getType()
+            String message = "Type mismatch: Expected " + declaration.getType().getSimpleName()
                 + " got " + value.getType().getSimpleName();
             error.throwSyntax( message, initialToken);
         }

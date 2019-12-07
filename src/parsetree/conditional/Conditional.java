@@ -23,10 +23,9 @@ public class Conditional extends JottEntity {
                 Constructor<?> constructor = type.getConstructor(JottEntity.class);
                 child = (JottEntity) constructor.newInstance(this);
                 child.construct();
-                if(child.isValid()){
-                    break;
+                if(!child.isValid()){
+                    child = null;
                 }
-                child = null;
             }
             catch (NoSuchMethodException | InstantiationException |
                 IllegalAccessException | InvocationTargetException ignored) {}

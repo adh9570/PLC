@@ -34,6 +34,10 @@ public class Print extends JottEntity {
 
         expression = new Expression(this);
         expression.construct();
+        if(!expression.isValid()){
+            invalidate();
+            return;
+        }
         expression.establish();
 
         Token closedParen = tokenStream.getNextToken();

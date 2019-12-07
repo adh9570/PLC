@@ -10,6 +10,8 @@ public class BuiltInFunction extends JottEntity {
 
     private static final Class[] ChildTypes = {
             Print.class,
+            CharAt.class,
+            Concat.class,
     };
 
     private JottEntity child;
@@ -50,5 +52,10 @@ public class BuiltInFunction extends JottEntity {
     @Override
     public Class getType() {
         return child.getType();
+    }
+
+    @Override
+    public Object getValue() throws JottError.JottException {
+        return child.getValue();
     }
 }

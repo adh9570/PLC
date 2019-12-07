@@ -13,7 +13,7 @@ public class Declaration extends JottEntity {
             "String",
             "Double",
             "Integer",
-            "void"
+            "Void"
     );
     private Token type;
     private Token id;
@@ -61,6 +61,10 @@ public class Declaration extends JottEntity {
 
     @Override
     public Object getValue() throws JottError.JottException {
+        return id.getValue();
+    }
+
+    public String getId() {
         return id.getValue();
     }
 }

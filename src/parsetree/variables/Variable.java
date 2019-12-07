@@ -12,9 +12,9 @@ public class Variable extends JottEntity {
 
 
     private static final Class[] ChildTypes = {
-            Function.class,
             Assignment.class,
-            Reassignment.class
+            Reassignment.class,
+            Function.class
     };
 
     public Variable(JottEntity parent) {

@@ -45,6 +45,11 @@ public class IntegerExpression extends JottEntity {
     @Override
     public void construct() throws JottError.JottException {
         initialToken = tokenStream.peekNextToken();
+        if( initialToken.getValue().equals("concat") ||  initialToken.getValue().equals("charAt")){
+            invalidate();
+            return;
+        }
+
         Factor factor;
         Token operation;
         do {

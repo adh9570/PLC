@@ -17,9 +17,10 @@ public class StringExpression extends JottEntity {
 
     @Override
     public void construct() throws JottError.JottException {
-        Token token = tokenStream.getNextToken();
+        Token token = tokenStream.peekNextToken();
 
         if( token.getType() == Token.Type.STRING ){
+            tokenStream.getNextToken();
             obj = token.getValue();
         }
         else if( token.getType() == Token.Type.ID_OR_KEYWORD && token.getValue().equals("concat")) {
@@ -33,6 +34,7 @@ public class StringExpression extends JottEntity {
             ((JottEntity) obj).establish();
         }
         else if (token.getType() == Token.Type.ID_OR_KEYWORD){
+            tokenStream.getNextToken();
             id = token;
         }
         else{

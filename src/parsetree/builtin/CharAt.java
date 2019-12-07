@@ -18,10 +18,17 @@ public class CharAt extends JottEntity {
     @Override
     public void construct() throws JottError.JottException {
 
+        Token nextToken = tokenStream.getNextToken();
+        String token = nextToken.toString();
+        if( !token.equals("charAt")){
+            this.invalidate();
+            return;
+        }
+
         // First Parenthesis
         Token openParen = tokenStream.getNextToken();
         if(!openParen.getValue().equals("(")){
-            error.throwSyntax("Expected ( got" + openParen.getValue(), openParen);
+            error.throwSyntax("Expected ( got " + openParen.getValue(), openParen);
         }
 
         Token temp = tokenStream.peekNextToken();
@@ -35,7 +42,7 @@ public class CharAt extends JottEntity {
 
         Token comma = tokenStream.getNextToken();
         if(!comma.getValue().equals(",")){
-            error.throwSyntax("Expected , got " + openParen.getValue(), comma);
+            error.throwSyntax("Expected , got " + comma.getValue(), comma);
         }
 
         temp = tokenStream.peekNextToken();

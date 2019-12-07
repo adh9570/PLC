@@ -5,8 +5,8 @@ import parsetree.entity.JottEntity;
 import parsetree.expressions.booleanexpression.BooleanExpression;
 import parsetree.expressions.doubleexpression.DoubleExpression;
 import parsetree.expressions.functioncall.FunctionExpression;
-import parsetree.expressions.integerexpression.IntegerExpression;
 import parsetree.expressions.functioncall.ReturnExpression;
+import parsetree.expressions.integerexpression.IntegerExpression;
 import parsetree.expressions.stringexpression.StringExpression;
 
 import java.lang.reflect.Constructor;
@@ -18,11 +18,11 @@ public class Expression extends JottEntity {
 
     private static final Class[] ChildTypes = {
             ReturnExpression.class,
+            FunctionExpression.class,
             BooleanExpression.class,
             IntegerExpression.class,
             DoubleExpression.class,
             StringExpression.class,
-            FunctionExpression.class,
     };
 
     public Expression(JottEntity parent) throws JottError.JottException {

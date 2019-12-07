@@ -45,7 +45,7 @@ public class  Scanner {
 
         String pre = preScanned.replaceAll("//.*|(\"(?:\\\\[^\"]|\\\\\"|.)*?\")|(?s)/\\*.*?\\*/", "$1");
         TokenStream tokenStream = new TokenStream(pre);
-        pre = preScanned.replaceAll("}", "};");
+//        pre = pre.replaceAll("}", "};");
         error.setTokenStream(tokenStream);
         char[] characters = pre.toCharArray();
         int i = 0;
@@ -113,6 +113,7 @@ public class  Scanner {
                     }
                     else
                         tokenStream.addToken(new Token(token.toString(), Type.ASSIGN, lineNumber));
+                    token = new StringBuilder();
                     break;
                 case SEMICOLON:
                     token.append(c);

@@ -59,7 +59,6 @@ public class Function extends JottEntity{
 		if( !(paramList.getValue() instanceof List)){
 			return;
 		}
-
 		List declarations = (List) paramList.getValue();
 		if( parameters.size() != declarations.size() ){
 			error.throwRuntime("Missing parameters for function call", initalToken);

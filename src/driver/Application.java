@@ -48,8 +48,9 @@ public class Application {
 //        catch (JottError.JottException ignored) {
 //            // Ignored
 //        }
-        for( int i = 0; i < 25; i++) {
+        for( int i = 0; i < 29; i++) {
             try {
+                out.println("===================================Prog" + i + ".j===================================");
                 runFile("prog" + i + ".j");
             } catch (JottError.JottException ignored) {
                 // Ignored

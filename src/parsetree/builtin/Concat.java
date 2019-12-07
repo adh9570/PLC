@@ -17,10 +17,17 @@ public class Concat extends JottEntity {
     @Override
     public void construct() throws JottError.JottException {
 
+        Token nextToken = tokenStream.getNextToken();
+        String token = nextToken.toString();
+        if( !token.equals("concat")){
+            this.invalidate();
+            return;
+        }
+
         // First Parenthesis
         Token openParen = tokenStream.getNextToken();
         if( openParen.getType() != Token.Type.START_PAREN ){
-            error.throwSyntax("Expected ( got" + openParen.getValue(), openParen);
+            error.throwSyntax("Expected ( got " + openParen.getValue(), openParen);
         }
 
         obj1 = new StringExpression(this);

@@ -7,7 +7,6 @@ import parsetree.entity.JottEntity;
 import parsetree.expressions.Expression;
 import parsetree.recursion.Recursion;
 import parsetree.variables.Variable;
-import scanner.Token;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -22,6 +21,8 @@ public class Statement extends JottEntity {
             Expression.class,
     };
 
+    private JottEntity child;
+
     public Statement(JottEntity parent) {
         super(parent);
     }
@@ -30,17 +31,14 @@ public class Statement extends JottEntity {
     @Override
     public void construct() throws JottError.JottException {
 
-        JottEntity child = null;
+        child = null;
 
         for( Class<?> type: ChildTypes ){
             try {
                 Constructor<?> constructor = type.getConstructor(JottEntity.class);
                 child = (JottEntity) constructor.newInstance(this);
                 child.construct();
-                Token end = tokenStream.getNextToken();
-                if (end.getType() != Token.Type.END_STMT) {
-                    child.invalidate();
-                }
+
                 if(child.isValid()){
                     break;
                 }
@@ -60,4 +58,13 @@ public class Statement extends JottEntity {
         child.establish();
     }
 
+    @Override
+    public Class getType() {
+        return child.getType();
+    }
+
+    @Override
+    public Object getValue() throws JottError.JottException {
+        return child.getValue();
+    }
 }

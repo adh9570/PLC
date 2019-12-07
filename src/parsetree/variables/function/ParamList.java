@@ -20,6 +20,11 @@ public class ParamList extends JottEntity {
             return;
         }
 
+        if ( tokenStream.peekNextToken().getType() == Token.Type.END_PAREN ) {
+            tokenStream.getNextToken();
+            return;
+        }
+
         Declaration declaration;
         Token next;
         do {
