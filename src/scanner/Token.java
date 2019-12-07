@@ -40,7 +40,8 @@ public class Token {
         LESS(),
         GREATER(),
         LESS_EQ(),
-        GREATER_EQUAL();
+        GREATER_EQUAL(),
+        NULL("Token Stream Empty");
 
         String value;
 

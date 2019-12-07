@@ -75,6 +75,9 @@ public class TokenStream {
      * @return token {@link Token}
      */
     public Token peekNextToken(){
+        if(isEmpty()){
+            return new Token("", Token.Type.NULL, 0);
+        }
         return tokens.get(index);
     }
 
